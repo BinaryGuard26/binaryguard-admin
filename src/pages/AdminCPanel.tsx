@@ -198,17 +198,39 @@ export default function AdminCPanel() {
   }
 
   if (!unlocked) {
-    return <main className="admin-login-shell">
-      <section className="admin-login-card">
-        <div className="brand-badge">BG</div>
-        <p className="eyebrow">admin.binaryguard.ca</p>
-        <h1>Admin CPanel Login</h1>
-        <p>Only approved BinaryGuard administrators with password and MFA can manage portal.binaryguard.ca.</p>
-        <label>Admin email<input value={login.email} onChange={event => setLogin({ ...login, email: event.target.value })} /></label>
-        <label>Password<input type="password" value={login.password} onChange={event => setLogin({ ...login, password: event.target.value })} /></label>
-        <label>MFA code<input value={login.mfaCode} maxLength={6} onChange={event => setLogin({ ...login, mfaCode: event.target.value })} /></label>
-        <button className="primary" onClick={unlockAdmin}>Unlock Admin CPanel</button>
-        <small>Prototype admin: admin@binaryguard.ca / Admin#2026! / 864209</small>
+    return <main className="wp-shell admin-login-layout">
+      <aside className="wp-sidebar admin-login-sidebar">
+        <div className="wp-brand"><span>BG</span><div><strong>BinaryGuard</strong><small>Admin CPanel</small></div></div>
+        <div className="wp-host">admin.binaryguard.ca</div>
+        <div className="admin-sidebar-spacer" />
+        <div className="admin-sidebar-note"><span>✓</span><div><strong>Separate admin surface</strong><small>Admin access is isolated from the client portal.</small></div></div>
+      </aside>
+
+      <section className="wp-main">
+        <header className="wp-topbar admin-login-topbar">
+          <div><p className="eyebrow">Admin Access</p><h2>Admin CPanel Login</h2></div>
+          <div className="wp-session">
+            <span className="admin-avatar">BA</span>
+            <div className="admin-session-name"><strong>BinaryGuard Admin</strong><small>Super Admin</small></div>
+            <button type="button">Lock session</button>
+            <span className="status-pill">Locked</span>
+          </div>
+        </header>
+
+        <section className="admin-login-content">
+          <div className="admin-login-intro">
+            <div className="admin-login-icon">🔐</div>
+            <div><p className="eyebrow">admin.binaryguard.ca</p><h1>Secure admin login</h1><p>Only approved BinaryGuard administrators with MFA can open the control panel.</p></div>
+          </div>
+
+          <section className="admin-login-card">
+            <label>Admin email<input value={login.email} onChange={event => setLogin({ ...login, email: event.target.value })} /></label>
+            <label>Password<input type="password" value={login.password} onChange={event => setLogin({ ...login, password: event.target.value })} /></label>
+            <label>MFA code<input value={login.mfaCode} maxLength={6} onChange={event => setLogin({ ...login, mfaCode: event.target.value })} /></label>
+            <button className="primary" onClick={unlockAdmin}>Unlock Admin CPanel <span>→</span></button>
+            <small>Prototype admin: <strong>admin@binaryguard.ca</strong>, password <strong>Admin#2026!</strong>, MFA <strong>864209</strong>.</small>
+          </section>
+        </section>
       </section>
     </main>;
   }
@@ -216,7 +238,7 @@ export default function AdminCPanel() {
   return <main className="wp-shell">
     <aside className="wp-sidebar">
       <div className="wp-brand"><span>BG</span><div><strong>BinaryGuard</strong><small>Admin CPanel</small></div></div>
-      <div className="wp-host">● admin.binaryguard.ca</div>
+      <div className="wp-host">admin.binaryguard.ca</div>
       <nav>
         <p>Main</p>
         <button className={activeTab === 'dashboard' ? 'active' : ''} onClick={() => setActiveTab('dashboard')}>⌂ Dashboard</button>
@@ -236,8 +258,13 @@ export default function AdminCPanel() {
 
     <section className="wp-main">
       <header className="wp-topbar">
-        <div><p className="eyebrow">Admin CPanel</p><h2>{activeTab === 'dashboard' ? 'Dashboard' : titleCase(activeTab)}</h2></div>
-        <div className="wp-session"><span>{currentAdmin?.name || 'Admin'}</span><button onClick={() => setUnlocked(false)}>Lock session</button></div>
+        <div><p className="eyebrow">admin.binaryguard.ca</p><h2>{activeTab === 'dashboard' ? 'Portal Control Panel' : titleCase(activeTab)}</h2></div>
+        <div className="wp-session">
+          <span className="admin-avatar">BA</span>
+          <div className="admin-session-name"><strong>{currentAdmin?.name || 'BinaryGuard Admin'}</strong><small>{currentAdmin ? titleCase(currentAdmin.role) : 'Super Admin'}</small></div>
+          <button onClick={() => setUnlocked(false)}>Lock session</button>
+          <span className="status-pill verified">MFA verified</span>
+        </div>
       </header>
 
       {activeTab === 'dashboard' && <section className="wp-dashboard">
