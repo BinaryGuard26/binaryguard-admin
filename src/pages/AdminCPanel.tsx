@@ -1,5 +1,4 @@
 import { type ReactNode, useMemo, useState } from 'react';
-import '../styles/admin.css';
 
 type AdminTab =
   | 'dashboard'
