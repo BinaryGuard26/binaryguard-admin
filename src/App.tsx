@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './styles/portal.css';
+import "./styles/admin.css";
 import AdminCPanel from './pages/AdminCPanel';
 
 type Layer = 'user' | 'service' | 'order';
